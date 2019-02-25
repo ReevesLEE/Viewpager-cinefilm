@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<title>轮播图-胶片</title>
+	<style>
+		html,body {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}
+
+		body>div {
+			width: 800px;
+			height: 500px;
+			position: relative;
+			left: 50%;
+			margin-left: -400px;
+			top: 100px;
+			overflow: hidden;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+		#show {
+			width: 2400px;
+			height: 100%;
+			position: relative;
+			z-index: 1px;
+		}
+		#show>div {
+			width: 800px;
+			height: 100%;
+			float: left;
+		}
+		#nums {
+			width: 100%;
+			height: 30px;
+			background-color: blue;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			text-align: center;
+			line-height: 30px;
+			z-index: 1;
+		}
+		span {
+			display: inline-block;
+			width: 50px;
+			color: #fff;
+		}
+		#one {
+			color: #000;
+		}
+
+		.button {
+			display: none;
+			height: 62px;
+			width: 30px;
+			position: fixed;
+			top: 300px;
+			z-index: 50;
+		}
+
+		.button:hover {
+			cursor: pointer;
+		}
+		#lb {
+			left: 50%;
+			margin-left: -400px;
+		}
+
+		#rb {
+			right: 50%;
+			transform: translateX(400px);
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div id="show">
+			<div><img src="./image/0.jpg"></div>
+			<div><img src="./image/1.jpg"></div>
+			<div><img src="./image/2.jpg"></div>
+			<img src="./image/lb.png" class="button" id="lb" alt="">
+			<img src="./image/rb.png" class="button" id="rb" alt="">
+		</div>
+		<div id="nums">
+			<span id="one">1</span>
+			<span id="two">2</span>
+			<span id="three">3</span>
+		</div>
+	</div>
+
+	<script src="./js/jquery-3.3.1.min.js"></script>
+	<script>
+		//播放
+		function show(){
+			$("#show").css("margin-left",'-=800px');
+			if ($("#show").css("margin-left")=='-2400px') {
+				$("#show").css("margin-left",'0');
+			}
+			if ($("#show").css("margin-left")=='-800px') {
+				$("#two").css("color","#000");
+				$("#two").siblings().css("color","#fff");
+			}else if($("#show").css("margin-left")=='-1600px'){
+				$("#three").css("color","#000");
+				$("#three").siblings().css("color","#fff");
+			}else{
+				$("#one").css("color","#000");
+				$("#one").siblings().css("color","#fff");
+			}
+		}
+		var int = setInterval(show,1000);
+
+		//暂停
+		function pause(){
+			clearInterval(int);
+		}
+
+		$("#show").mouseover(function(){
+			pause();
+			$(".button").css("display", "block");
+
+		})
+
+		$("#lb").click(function() {
+			// console.log("点击到了");
+			if ($("#show").css("margin-left")=='0px') {
+				$("#show").css("margin-left",'-1600px');
+				// console.log("第一个图的时候 回到第三个");
+				$("#three").css("color","#000");
+				$("#three").siblings().css("color","#fff");
+			} else if ($("#show").css("margin-left")=='-800px') {
+				$("#show").css("margin-left",'0px');
+				// console.log("第二个图的时候 回到第一个");
+				$("#one").css("color","#000");
+				$("#one").siblings().css("color","#fff");
+			} else if ($("#show").css("margin-left")=='-1600px') {
+				$("#show").css("margin-left",'-800px');
+				// console.log("第三个图的时候 回到第二个");
+				$("#two").css("color","#000");
+				$("#two").siblings().css("color","#fff");
+			}
+		})
+
+		$("#rb").click(function() {
+			console.log("点击到了");
+			if ($("#show").css("margin-left")=='0px') {
+				$("#show").css("margin-left",'-800px');
+				// console.log("第一个图的时候 进到第二个");
+				$("#two").css("color","#000");
+				$("#two").siblings().css("color","#fff");
+			} else if ($("#show").css("margin-left")=='-800px') {
+				$("#show").css("margin-left",'-1600px');
+				// console.log("第二个图的时候 进到第三个");
+				$("#three").css("color","#000");
+				$("#three").siblings().css("color","#fff");
+			} else if ($("#show").css("margin-left")=='-1600px') {
+				$("#show").css("margin-left",'0px');
+				// console.log("第三个图的时候 进到第一个");
+				$("#one").css("color","#000");
+				$("#one").siblings().css("color","#fff");
+			}
+		})
+
+		$("#show").mouseout(function(){
+			int = setInterval(show,1000);
+			$(".button").css("display", "none");
+		})
+	</script>
+
+</body>
+</html>
